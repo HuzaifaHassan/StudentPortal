@@ -9,7 +9,7 @@ namespace DbHandler.Repositories
 {
     public interface IStudentRepository
     {
-        void AddStAddStudentDet(StudentDetails Model);
+        void AddStudentDet(StudentDetails Model);
         void DelStudentDet(StudentDetails Model);
         void UpdateStudentDet(StudentDetails Model);
         StudentDetails GetByStudentId(string StudentId);
