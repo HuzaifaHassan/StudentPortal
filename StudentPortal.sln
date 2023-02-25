@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentPortal", "StudentPortal\StudentPortal.csproj", "{70D5FF64-C302-4BB9-B5E6-5577EFCC4427}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbHandler", "Handlers\DbHandler\DbHandler.csproj", "{2534969E-D87A-4091-8DA0-C3E254B7EFEE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{70D5FF64-C302-4BB9-B5E6-5577EFCC4427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70D5FF64-C302-4BB9-B5E6-5577EFCC4427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70D5FF64-C302-4BB9-B5E6-5577EFCC4427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70D5FF64-C302-4BB9-B5E6-5577EFCC4427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2534969E-D87A-4091-8DA0-C3E254B7EFEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2534969E-D87A-4091-8DA0-C3E254B7EFEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2534969E-D87A-4091-8DA0-C3E254B7EFEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2534969E-D87A-4091-8DA0-C3E254B7EFEE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DC481875-4213-4FAA-BA96-E42CBAA8377C}
+	EndGlobalSection
+EndGlobal
