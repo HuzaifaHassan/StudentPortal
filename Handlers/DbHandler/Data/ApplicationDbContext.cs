@@ -14,5 +14,6 @@ namespace DbHandler.Data
     {
         public DbSet<AppConfig> TAppConfig { get; set; }
         public DbSet<StudentDetails> TStudentDetails { get; set; }
+        public DbSet<Courses> TCourses { get; set; }
     }
 }

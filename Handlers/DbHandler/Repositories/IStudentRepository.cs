@@ -13,7 +13,9 @@ namespace DbHandler.Repositories
         void DelStudentDet(StudentDetails Model);
         void UpdateStudentDet(StudentDetails Model);
         StudentDetails GetByStudentId(string StudentId);
+        StudentDetails GetByCStudentId(string CStudentId);
         StudentDetails GetActiveNonActiveByStudentId(string StudentId);
+        StudentDetails GetActiveNonActiveByCStudentId(string CStudentId);
         bool Save();
     }
 }

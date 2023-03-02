@@ -12,6 +12,7 @@ namespace DbHandler.Model
         [Key]
         public int Id { get; set; }
         public string stId { get; set; }
+        public string cstID { get; set; }   
         public DateTime CreatedOn { get; set; }
         public bool IsActive { get; set; }
 

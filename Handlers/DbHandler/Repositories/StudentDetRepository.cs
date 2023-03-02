@@ -29,12 +29,22 @@ namespace DbHandler.Repositories
             return resp;
         
         }
+        public StudentDetails GetByCStudentId(string CStudentId) 
+        {
+            var resp = _ctx.TStudentDetails.Where(x => x.IsActive == true && x.cstID == CStudentId).FirstOrDefault();
+            return resp;
+        
+        }
         public StudentDetails GetActiveNonActiveByStudentId(string StudentId)
         {
             var resp = _ctx.TStudentDetails.Where(x => x.stId == StudentId).FirstOrDefault();
             return resp;
         }
-
+        public StudentDetails GetActiveNonActiveByCStudentId(string CStudentId)
+        {
+            var resp = _ctx.TStudentDetails.Where(x => x.cstID == CStudentId).FirstOrDefault();
+            return resp;
+        }
         public bool Save()
         {
             return _ctx.SaveChanges()>=0;
