@@ -8,8 +8,8 @@ namespace DbHandler.Repositories
     public  interface IEnrollCourse
     {
         void AddStdCourses(EnrollCourses model);
-        void RemoveCourses(EnrollCourses model);
-        EnrollCourses GetByGetBycstId(string Cstid);
+        void RemoveCourse(EnrollCourses model);
+        EnrollCourses GetBycstId(string Cstid);
         EnrollCourses GetActiveNonActiveBycstId(string Cstid);
         bool Save();
     }

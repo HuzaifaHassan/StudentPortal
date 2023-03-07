@@ -7,7 +7,7 @@ using System.Text;
 
 namespace DbHandler.Repositories
 {
-    public class CoursesRepository
+    public class CoursesRepository:ICourseRepository
     {
         private readonly ApplicationDbContext _ctx;
         public CoursesRepository(ApplicationDbContext context)
