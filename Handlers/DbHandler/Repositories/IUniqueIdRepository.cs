@@ -9,6 +9,6 @@ namespace DbHandler.Repositories
 {
     public interface IUniqueIdRepository
     {
-        void Add(UniqueID item);
+        void Add(UniqueID item);//
     }
 }
