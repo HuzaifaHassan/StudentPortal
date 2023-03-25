@@ -18,6 +18,7 @@ using DbHandler.Data;
 using DbHandler.Model;
 using Microsoft.EntityFrameworkCore;
 
+using System.Configuration;
 
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -25,6 +26,7 @@ using DbHandler.Repositories;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 using DbHandler.Repositories;
+using Microsoft.Data.SqlClient;
 
 namespace StudentPortal
 {
@@ -34,11 +36,13 @@ namespace StudentPortal
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
+               
         }
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = "";
-            var connstring= Configuration.GetConnectionString("DefaultConnection");
+            var connstring = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
             services.AddDbContextPool<ApplicationDbContext>(options =>
             {
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
@@ -53,6 +57,7 @@ namespace StudentPortal
                 
                 sqlServerOptions => sqlServerOptions.CommandTimeout(3600));
             });
+            
             #region Cors
             services.AddCors(options =>
             {
@@ -85,6 +90,7 @@ namespace StudentPortal
                 });
 
             });
+            
             services.Configure<IISServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;

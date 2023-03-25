@@ -10,7 +10,7 @@ namespace DbHandler.Model
     public class StudentDetails
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string stId { get; set; }
         public string cstID { get; set; }   
         public DateTime CreatedOn { get; set; }
