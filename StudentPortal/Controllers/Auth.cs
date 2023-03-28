@@ -33,15 +33,18 @@ namespace StudentPortal.Controllers
         private readonly IEnrollCourse _enroll;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUniqueIdRepository _UniqueId;
+
         public Auth(ApplicationDbContext ctx, IStudentRepository studentRep, ICourseRepository courserep, IEnrollCourse enroll,SignInManager<ApplicationUser> signInManager,
-                     UserManager<ApplicationUser> userManager)
+                     UserManager<ApplicationUser> userManager, IUniqueIdRepository uniqueId)
         {
             _ctx = ctx;
             _studentRep = studentRep;
             _courserep = courserep;
             _enroll = enroll;
             _signInManager = signInManager;
-            _userManager= userManager;
+            _userManager = userManager;
+            _UniqueId = uniqueId;
         }
 
     }

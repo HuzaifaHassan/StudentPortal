@@ -19,6 +19,20 @@ namespace StudentPortal.DTO
         [Required(ErrorMessage ="Last Name is Required")]
         public string LastName { get; set; }
 
+        [Required(ErrorMessage ="ID Required")]
+        public string UniqueId { get; set; }
+
+        [Required(ErrorMessage ="Email is Required")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage ="Password is Required")]
+        public string Password { get; set; }
+        [Required(ErrorMessage = "Student Id Required")]
+        public string stId { get; set; }
+        [Required(ErrorMessage = "Cstudent Id Required")]
+        public string cstID { get; set; }
+
+
 
 
     }
