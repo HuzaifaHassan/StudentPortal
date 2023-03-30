@@ -20,6 +20,9 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
 using static StudentPortal.DTO.DTOS;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using StudentPortal.Responses;
+using StudentPortal.Models;
+using StudentPortal.DTO;
 
 namespace StudentPortal.Controllers
 {
@@ -48,4 +51,17 @@ namespace StudentPortal.Controllers
         }
 
     }
+    [HttpPost]
+    [Route("Register")]
+    [ProducesResponseType(typeof(ActiveResponse<RegistraiontObject>), 200)]
+    public async Task<IActionResult> Register([FromBody] RegisterDTO DTO)
+    {
+        DateTime _startTime = DateTime.Now;
+        var name = "";
+        bool exist = false;
+        var id = "";
+
+    
+    }
+
 }

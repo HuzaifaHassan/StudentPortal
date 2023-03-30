@@ -45,6 +45,11 @@ namespace DbHandler.Repositories
         {
             return _ctx.SaveChanges() >= 0;    
         }
+
+        public Task<bool> CheckLast10Passwords(string studentId, string password, int count)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
