@@ -21,6 +21,7 @@ namespace DbHandler.Data
         public DbSet<EnrollCourses> TEnrollCourses { get; set; }
         public DbSet<StudentPassword> TStudentPasswords { get; set; }
         public DbSet<UniqueID> TUniqueId { get; set; }
+        public DbSet<Log> TLog { get; set; }
 
     }
     public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
