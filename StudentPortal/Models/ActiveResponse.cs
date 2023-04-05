@@ -18,7 +18,7 @@ namespace StudentPortal.Models
         public ActiveErrorCode Code { get; set; }
         public string Message { get; set; }
         public T Content { get; set; }
-        public string EsceptionMessage { get; set; }
+        public string? ExceptionMessage { get; set; }
         public string Token { get; set; }
     }
     public enum ActiveErrorCode

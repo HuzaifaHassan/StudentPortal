@@ -51,7 +51,7 @@ namespace DbHandler.Repositories
         }
         public void InnerLogs(ILogRepository _innerLog, string testMode, string baseUrl, string url, DateTime? StartTime, DateTime? EndTime, string studentId, string RequestBody, string RequestResponse)
         {
-            if (testMode = "1")
+            if (testMode == "1")
             {
                 WriteInnerLogs(_innerLog, baseUrl, url, StartTime, EndTime, studentId, RequestBody, RequestResponse);
             }

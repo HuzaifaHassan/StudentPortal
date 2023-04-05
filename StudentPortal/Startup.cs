@@ -41,8 +41,9 @@ namespace StudentPortal
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = "";
-            var connstring = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+          //  var connection = "";
+            var connection = "Data Source=HUZAIFAHASSAN\\SQLEXPRESS;Initial Catalog=StudentDB;Integrated Security=True;TrustServerCertificate=True;";
+            var conn = new SqlConnection(connection);
             services.AddDbContextPool<ApplicationDbContext>(options =>
             {
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
@@ -51,13 +52,21 @@ namespace StudentPortal
                       sqlServerOptionsAction.CommandTimeout(3600);
                   });
             });
+
             services.AddDbContext<ApplicationDbContext>(op =>
             {
                 op.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 
                 sqlServerOptions => sqlServerOptions.CommandTimeout(3600));
             });
-            
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = false;
+
+            })
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+             .AddDefaultTokenProviders();
+
             #region Cors
             services.AddCors(options =>
             {
@@ -75,8 +84,10 @@ namespace StudentPortal
             #region Customservices
             services.AddScoped<IAppConfigRepository, AppConfigRepository>();
             services.AddScoped<ICourseRepository, CoursesRepository>();
-            services.AddScoped<IStudentRepository,StudentDetRepository>();
+            services.AddScoped<IStudentRepository, StudentDetRepository>();
             services.AddScoped<IEnrollCourse, EnrollCourseRepository>();
+            services.AddScoped<ILogRepository, LogRepository>();
+            services.AddScoped<IUniqueIdRepository, UniqueIdRepository>();
             #endregion
             services.AddHttpClient();
             services.AddSwaggerGen(options =>
