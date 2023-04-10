@@ -9,6 +9,8 @@ namespace DbHandler.Repositories
     {
         void AddStdCourses(EnrollCourses model);
         void RemoveCourse(EnrollCourses model);
+        List<EnrollCourses> GetByid(string StuId);
+        void AddCourse(List<EnrollCourses> model);
         EnrollCourses GetBycstId(string Cstid);
         EnrollCourses GetActiveNonActiveBycstId(string Cstid);
         bool Save();

@@ -21,6 +21,14 @@ namespace DbHandler.Repositories
         {
             _ctx.TEnrollCourses.Remove(model);
         }
+        public List<EnrollCourses> GetByid(string StuId)
+        {
+            return _ctx.TEnrollCourses.Where(s => s.cstId == StuId && s.IsActive == true).ToList();
+        }
+        public void AddCourse(List<EnrollCourses> model)
+        {
+            _ctx.TEnrollCourses.AddRange(model);
+        }
         public EnrollCourses GetBycstId(string Cstid)
         {
             var response = _ctx.TEnrollCourses.Where(x => x.IsActive == true &&
