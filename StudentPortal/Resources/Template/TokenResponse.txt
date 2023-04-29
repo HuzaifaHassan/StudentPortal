@@ -1,0 +1,8 @@
+﻿	{
+    "access_token": "V0tmfNMYDbsgJSbsNQvDmwZZRzAMdVY3IxYi5ggI3xtqNmPDhVHxcfOmrXt55s3LaxuA1kiBJOlE7j5MRanOmyLs0TrrPelpc08qcJ7leMR4eM3iWXF_EU-CUHrk_wEopYYgYwIDwknKsTKGeR4UoLXuWMQAojDAwUA7HmwIj8Tmp-Z9W1cDrsk08T274JE5DC_N01j6U_mUG-8KEMy_cptdU233-sYQorO0DqAWgaU",
+    "token_type": "bearer",
+    "expires_in": 899,
+    "userName": "admin",
+    ".issued": "Thu, 08 Aug 2019 08:22:38 GMT",
+    ".expires": "Thu, 08 Aug 2019 08:37:38 GMT"
+}

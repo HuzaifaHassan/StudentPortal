@@ -38,10 +38,10 @@ namespace StudentPortal.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICourseRepository _course;
         private readonly IStudentRepository _student;
-        private readonly EnrollCourseRepository _enroll;
+        private readonly IEnrollCourse _enroll;
 
         public CourseController(IUniqueIdRepository uniqueId, ICourseRepository course, ILogRepository logs, UserManager<ApplicationUser> userManager,
-                                 IConfiguration config, IStudentRepository student, EnrollCourseRepository enroll)
+                                 IConfiguration config, IStudentRepository student, IEnrollCourse enroll)
         {
 
             _course = course;
@@ -88,10 +88,12 @@ namespace StudentPortal.Controllers
         public async Task<IActionResult> EnrollCourse([FromBody] AddCourses DTO)
         {
             DateTime startTime = DateTime.Now;
-            var id = "";
+            var _id = "";
             try
             {
-                id = HttpContext.User.Claims.First().Value.ToString();
+                // var user= await _userManager.FindByIdAsync(id);
+                _id = DTO.id;
+                //  id = "39d19764-a330-4ee2-8ac8-008d15716342";
                 if (!TryValidateModel(DTO))
                 {
                     if (!ModelState.IsValid)
@@ -100,36 +102,37 @@ namespace StudentPortal.Controllers
 
                     }
                 }
-                var student = await _userManager.FindByIdAsync(id);
-                string _stud = student == null ? "NULL" : student.ToString();
-                var Tstud = _student.GetByStudentId(id);
+                var sstudent = await _userManager.FindByIdAsync(_id);
+                string _stud = sstudent == null ? "NULL" : sstudent.ToString();
+                var Tstud = _student.GetByStudentId(_id);
                 using (var transaction = _ctx.Database.BeginTransaction())
                 {
-                    var stCourses = _enroll.GetByid(id);
-                    if (stCourses.Count < 0)
+                    var stCourses = _enroll.GetByid(_id);
+                    if (stCourses.Count <= 0)
                     {
                         List<EnrollCourses> enr = new List<EnrollCourses>();
-                        foreach (var StCourse in stCourses)
-                        {
-                            EnrollCourses _enr = new EnrollCourses();
-                            _enr.IsActive = true;
-                            _enr.CourseName = DTO.CourseName;
-                            _enr.CourseCode = DTO.CourseCode;
-                            enr.Add(_enr);
+                        //  foreach (var StCourse in stCourses)
+                        //{
+                        EnrollCourses _enr = new EnrollCourses();
+                        _enr.IsActive = true;
+                        _enr.CourseName = DTO.CourseName;
+                        _enr.CourseCode = DTO.CourseCode;
+                        _enr.cstId = _id;
+                        enr.Add(_enr);
 
-                        }
-                        if (enr.Count < 0)
-                        {
-                            _enroll.AddCourse(enr);
-                            _enroll.Save();
+                        //}
+                        //if (enr.Count <= 0)
+                        // {
+                        _enroll.AddCourse(enr);
+                        _enroll.Save();
 
-                        }
+                        //}
 
                     }
 
                     transaction.Commit();
                 }
-                return await helper.Response("succ-001", Level.Success, "", ActiveErrorCode.Success, startTime, _logs, HttpContext, _config, DTO.BaseClass, DTO, "", ReturnResponse.Success, null, false);
+                return await helper.Response("succ-001", Level.Success, _id, ActiveErrorCode.Success, startTime, _logs, HttpContext, _config, DTO.BaseClass, DTO, "", ReturnResponse.Success, null, false);
 
             }
             catch (Exception ex)

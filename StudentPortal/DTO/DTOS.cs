@@ -60,11 +60,12 @@ namespace StudentPortal.DTO
         public BaseClass BaseClass{get;set;}
         [Required(ErrorMessage = "UniqueId Required")]
         public string UniqueId { get; set; }
-    
+
     }
     public class AddCourses
-    { 
-       public string CourseName { get; set; }
+    {
+        public string id { get; set; }
+    public string CourseName { get; set; }
         public string CourseCode { get; set; }
 
         public BaseClass BaseClass { get; set; }

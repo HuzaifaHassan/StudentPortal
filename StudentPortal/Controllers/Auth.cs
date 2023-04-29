@@ -109,7 +109,7 @@ namespace StudentPortal.Controllers
                 _studentRep.Save();
                
                 transaction.Commit();
-                return await _helper.Response("suc-001", Level.Success, "", ActiveErrorCode.Success, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, forLog, stid, ReturnResponse.Success, null, true);
+                return await _helper.Response("suc-001", Level.Success, stid, ActiveErrorCode.Success, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, forLog, stid, ReturnResponse.Success, null, true);
 
 
             }
