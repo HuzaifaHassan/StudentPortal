@@ -35,6 +35,12 @@ namespace DbHandler.Repositories
             return resp;
         
         }
+        public StudentDetails GetByStudentEmail(string email)
+        {
+            var resp = _ctx.TStudentDetails.Where(x => x.IsActive == true && x.Email == email).FirstOrDefault();
+            return resp;
+        
+        }
         public StudentDetails GetActiveNonActiveByStudentId(string StudentId)
         {
             var resp = _ctx.TStudentDetails.Where(x => x.stId == StudentId).FirstOrDefault();

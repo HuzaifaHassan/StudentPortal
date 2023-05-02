@@ -22,7 +22,7 @@ namespace DbHandler.Data
         public DbSet<StudentPassword> TStudentPasswords { get; set; }
         public DbSet<UniqueID> TUniqueId { get; set; }
         public DbSet<Log> TLog { get; set; }
-
+        public DbSet<CourseDues> TCourseDues { get; set; }
     }
     public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
     {

@@ -58,7 +58,27 @@ namespace StudentPortal.Controllers
             _configuration = configuration;
 
         }
+        [HttpPost]
+        [Route("Login")]
+        [ProducesResponseType(typeof(ActiveResponse<string>), 200)]
+        public async Task<IActionResult> Login([FromBody] LoginDTO DTO)
+        {
+            DateTime _startTime = DateTime.Now;
+            try
+            {
+                var user = _studentRep.GetByStudentEmail(DTO.Email);
+                if (user == null || user.Password != DTO.Password)
+                {
+                    return await _helper.Response("err-001", Level.Error, "Invalid email or password", ActiveErrorCode.Failed, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, DTO, "", ReturnResponse.Unauthorized, null, false);
+                }
 
+                return await _helper.Response("suc-001", Level.Success, user.Id, ActiveErrorCode.Success, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, DTO, user.Id, ReturnResponse.Success, null, true);
+            }
+            catch (Exception ex)
+            {
+                return await _helper.Response("err-001", Level.Error, ex.Message, ActiveErrorCode.Failed, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, DTO, "", ReturnResponse.InternalServerError, ex, false);
+            }
+        }
 
         [HttpPost]
         [Route("Register")]
@@ -85,8 +105,8 @@ namespace StudentPortal.Controllers
                 var transaction = _ctx.Database.BeginTransaction();
                 var stid = Guid.NewGuid().ToString();
                 Random rnd = new Random();
-                int stdid1 = rnd.Next(100000, 999999);
-                int stdid2 = rnd.Next(100000, 999999);
+                int stdid1 = rnd.Next(10, 9);
+                int stdid2 = rnd.Next(10, 9);
                 int stdid3 = rnd.Next(1, 7);
                 var _stdid = stdid1.ToString() + stdid2.ToString() + stdid3.ToString();
                 var _cstudentId="c" + stdid2.ToString() + stdid3.ToString();
@@ -109,7 +129,7 @@ namespace StudentPortal.Controllers
                 _studentRep.Save();
                
                 transaction.Commit();
-                return await _helper.Response("suc-001", Level.Success, stid, ActiveErrorCode.Success, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, forLog, stid, ReturnResponse.Success, null, true);
+                return await _helper.Response("suc-001", Level.Success, stid, ActiveErrorCode.Success, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, forLog, _cstudentId, ReturnResponse.Success, null, true);
 
 
             }
@@ -123,6 +143,45 @@ namespace StudentPortal.Controllers
                 return await _helper.Response("ex-0001", Level.Error, null, ActiveErrorCode.Failed, _startTime, _logs, HttpContext, null, DTO.BaseClass, forLog, "", ReturnResponse.BadRequest, ex, false);
                 
             }
+
+
+        }
+        [HttpPost]
+        [Route("GetStudentDetails")]
+        [ProducesResponseType(typeof(ActiveResponse<List<Courses>>), 200)]
+
+        public async Task<IActionResult> GetStudentDetails([FromBody] GetDet DTO)
+        {
+            var id = "";
+            DateTime startTime = DateTime.Now;
+            try
+            {
+                id = DTO.id;
+                if (!TryValidateModel(DTO))
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        return await _helper.Response("err-Model", Level.Success, _helper.GetErrors(ModelState), ActiveErrorCode.Failed, startTime, _logs, HttpContext, _configuration, DTO.baseClass, DTO, "", ReturnResponse.BadRequest, null, false);
+                    }
+
+                }
+
+                //  _uniqueId.Add(new DbHandler.Model.UniqueID { Id = DTO.UniqueId, Route = "GetAll", CreatedTime = DateTime.Now });
+                var student = _studentRep.GetByStudentId(id);
+                return await _helper.Response("succ-001", Level.Success, student, ActiveErrorCode.Success, startTime, _logs, HttpContext, _configuration, DTO.baseClass, DTO, "", ReturnResponse.Success, null, false);
+
+            }
+            catch (Exception ex)
+            {
+                return await _helper.Response("ex-0003", Level.Error, null, ActiveErrorCode.Failed, startTime, _logs, HttpContext, _configuration, DTO?.baseClass, DTO, "", ReturnResponse.BadRequest, ex, false);
+
+
+            }
+
+
+
+
+
 
 
         }

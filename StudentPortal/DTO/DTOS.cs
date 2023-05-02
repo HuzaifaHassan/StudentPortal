@@ -36,6 +36,15 @@ namespace StudentPortal.DTO
 
 
     }
+    public class LoginDTO
+    {
+        [Required]
+        public string Email { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+        public BaseClass BaseClass { get; set; }
+    }
     public class BaseClass
     {
         public string IP { get; set; }
@@ -62,11 +71,39 @@ namespace StudentPortal.DTO
         public string UniqueId { get; set; }
 
     }
+    public class ViewCourses
+    { 
+       public string id { get; set; }
+        public BaseClass baseClass { get; set; }
+
+        
+    
+    }
+    public class GetDet
+    { 
+      public string id { get; set; }
+        public BaseClass baseClass { get; set;}
+       
+    }
+    public class AddCourseFee
+    { 
+      public string id { get; set; }
+
+        public string CourseFee { get; set; }
+
+        public string Ref { get; set; }
+        public bool IsPaid { get; set; }
+        public BaseClass baseClass { get; set; }
+    
+    }
+  
     public class AddCourses
     {
         public string id { get; set; }
-    public string CourseName { get; set; }
+        public string CourseName { get; set; }
         public string CourseCode { get; set; }
+
+        public string CourseFee { get; set; }
 
         public BaseClass BaseClass { get; set; }
     

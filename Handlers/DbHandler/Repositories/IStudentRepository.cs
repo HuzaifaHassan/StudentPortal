@@ -16,6 +16,8 @@ namespace DbHandler.Repositories
         StudentDetails GetByCStudentId(string CStudentId);
         StudentDetails GetActiveNonActiveByStudentId(string StudentId);
         StudentDetails GetActiveNonActiveByCStudentId(string CStudentId);
-        bool Save();
+        StudentDetails GetByStudentEmail(string email);
+
+       bool Save();
     }
 }

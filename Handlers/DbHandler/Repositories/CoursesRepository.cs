@@ -25,5 +25,9 @@ namespace DbHandler.Repositories
         {
             return _ctx.TCourses.Where(x => x.CourseName == courseName).FirstOrDefault();
         }
+        public decimal CalculateTotal()
+        {
+            return Convert.ToInt64(_ctx.TCourses.Sum(x => Convert.ToInt64(x.CourseFee)));
+        }
     }
 }

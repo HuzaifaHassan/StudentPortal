@@ -11,9 +11,11 @@ namespace DbHandler.Model
     {
         [Key]
         public int Id { get; set; }
-        public string cstId { get; set; }
+        public string stId { get; set; }
         public string CourseCode { get; set; }
         public string CourseName { get; set; }
+
+        public string fees { get; set; }
         public bool IsActive { get; set; }
     }
 }

@@ -9,9 +9,14 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace DbHandler.Repositories
 {
-    public  class EnrollCourseRepository:IEnrollCourse
+    public class EnrollCourseRepository : IEnrollCourse
     {
         private readonly ApplicationDbContext _ctx;
+
+        public EnrollCourseRepository(ApplicationDbContext ctx)
+        {
+            _ctx = ctx;
+        }
         public void AddStdCourses(EnrollCourses model)
         {
             _ctx.TEnrollCourses.Add(model);
@@ -23,7 +28,7 @@ namespace DbHandler.Repositories
         }
         public List<EnrollCourses> GetByid(string StuId)
         {
-            return _ctx.TEnrollCourses.Where(s => s.cstId == StuId && s.IsActive == true).ToList();
+            return _ctx.TEnrollCourses.Where(s => s.stId == StuId && s.IsActive == true).ToList();
         }
         public void AddCourse(List<EnrollCourses> model)
         {
@@ -32,12 +37,12 @@ namespace DbHandler.Repositories
         public EnrollCourses GetBycstId(string Cstid)
         {
             var response = _ctx.TEnrollCourses.Where(x => x.IsActive == true &&
-                                    x.cstId == Cstid).FirstOrDefault();
+                                    x.stId == Cstid).FirstOrDefault();
             return response;
         }
         public EnrollCourses GetActiveNonActiveBycstId(string Cstid)
         {
-            var response = _ctx.TEnrollCourses.Where(x => x.cstId == Cstid).FirstOrDefault();
+            var response = _ctx.TEnrollCourses.Where(x => x.stId == Cstid).FirstOrDefault();
             return response;
         }
         public bool Save()

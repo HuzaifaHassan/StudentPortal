@@ -14,6 +14,7 @@ namespace DbHandler.Model
         public int Id { get; set; }
         public string CourseCode { get; set; }
         public string CourseName { get; set; }
+        public string CourseFee { get; set; }
         public bool IsActive { get; set; }
     }
 }

@@ -9,8 +9,8 @@ namespace DbHandler.Repositories
 {
     public interface IUserRepository
     {
-        void Add(User item);
-        User GetByEmail(string email);
-        bool Save();
+        //void Add(User item);
+        //User GetByEmail(string email);
+        //bool Save();
     }
 }

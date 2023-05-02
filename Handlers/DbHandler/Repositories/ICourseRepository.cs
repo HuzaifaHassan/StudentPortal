@@ -9,6 +9,6 @@ namespace DbHandler.Repositories
     {
         List<Courses> GetCourses();
         Courses GetByCourseName(string courseName);
-
+        public decimal CalculateTotal();
     }
 }

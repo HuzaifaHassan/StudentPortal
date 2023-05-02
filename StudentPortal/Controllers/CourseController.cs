@@ -21,7 +21,7 @@ using StudentPortal.Helper;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using StudentPortal.DTO;
 using DbHandler.Data;
-
+using System.Net;
 
 namespace StudentPortal.Controllers
 {
@@ -39,20 +39,21 @@ namespace StudentPortal.Controllers
         private readonly ICourseRepository _course;
         private readonly IStudentRepository _student;
         private readonly IEnrollCourse _enroll;
+        private readonly ICourseDuesRepository _coursedues;
 
         public CourseController(IUniqueIdRepository uniqueId, ICourseRepository course, ILogRepository logs, UserManager<ApplicationUser> userManager,
-                                 IConfiguration config, IStudentRepository student, IEnrollCourse enroll)
+                                 IConfiguration config, IStudentRepository student, IEnrollCourse enroll, ICourseDuesRepository coursedues)
         {
 
             _course = course;
             _uniqueId = uniqueId;
-            _logs = logs;   
-            _userManager = userManager; 
+            _logs = logs;
+            _userManager = userManager;
             _config = config;
             _student = student;
             _enroll = enroll;
-            helper = new APIHelper(student,userManager, config);
-        
+            helper = new APIHelper(student, userManager, config);
+            _coursedues = coursedues;
         }
         [HttpPost]
         [Route("GetCourses")]
@@ -66,23 +67,99 @@ namespace StudentPortal.Controllers
                 {
                     if (!ModelState.IsValid)
                     {
-                        return await helper.Response("err-Model", Level.Success, helper.GetErrors(ModelState), ActiveErrorCode.Failed, startTime, _logs, HttpContext, _config, DTO.BaseClass, DTO, "", ReturnResponse.BadRequest,null,false);
+                        return await helper.Response("err-Model", Level.Success, helper.GetErrors(ModelState), ActiveErrorCode.Failed, startTime, _logs, HttpContext, _config, DTO.BaseClass, DTO, "", ReturnResponse.BadRequest, null, false);
                     }
-                
+
                 }
                 _uniqueId.Add(new DbHandler.Model.UniqueID { Id = DTO.UniqueId, Route = "GetAll", CreatedTime = DateTime.Now });
                 var course = _course.GetCourses();
                 return await helper.Response("succ-001", Level.Success, course, ActiveErrorCode.Success, startTime, _logs, HttpContext, _config, DTO.BaseClass, DTO, "", ReturnResponse.Success, null, false);
-            
+
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return await helper.Response("ex-0003", Level.Error, null, ActiveErrorCode.Failed, startTime, _logs, HttpContext, _config, DTO?.BaseClass, DTO, "", ReturnResponse.BadRequest, ex, false);
-            
-            
+
+
             }
-        
+
         }
+
+
+        [HttpPost]
+        [Route("GetEnrolledCourses")]
+        [ProducesResponseType(typeof(ActiveResponse<List<Courses>>), 200)]
+
+        public async Task<IActionResult> ViewEnrolledCourses([FromBody] ViewCourses DTO)
+        {
+            var id = "";
+            DateTime startTime = DateTime.Now;
+            try
+            {
+                id = DTO.id;
+                if (!TryValidateModel(DTO))
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        return await helper.Response("err-Model", Level.Success, helper.GetErrors(ModelState), ActiveErrorCode.Failed, startTime, _logs, HttpContext, _config, DTO.baseClass, DTO, "", ReturnResponse.BadRequest, null, false);
+                    }
+
+                }
+
+                //  _uniqueId.Add(new DbHandler.Model.UniqueID { Id = DTO.UniqueId, Route = "GetAll", CreatedTime = DateTime.Now });
+                var course = _enroll.GetByid(id);
+                return await helper.Response("succ-001", Level.Success, course, ActiveErrorCode.Success, startTime, _logs, HttpContext, _config, DTO.baseClass, DTO, "", ReturnResponse.Success, null, false);
+
+            }
+            catch (Exception ex)
+            {
+                return await helper.Response("ex-0003", Level.Error, null, ActiveErrorCode.Failed, startTime, _logs, HttpContext, _config, DTO?.baseClass, DTO, "", ReturnResponse.BadRequest, ex, false);
+
+
+            }
+
+
+
+
+
+
+
+        }
+        [HttpPost]
+        [Route("GetCourseDues")]
+        [ProducesResponseType(typeof(ActiveResponse<List<Courses>>), 200)]
+        public async Task<IActionResult> GetCourseDues([FromBody] AddCourseFee DTO)
+        {
+            var id = "";
+            DateTime startTime = DateTime.Now;
+            try
+            {
+                id = DTO.id;
+                if (!TryValidateModel(DTO))
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        return await helper.Response("err-Model", Level.Success, helper.GetErrors(ModelState), ActiveErrorCode.Failed, startTime, _logs, HttpContext, _config, DTO.baseClass, DTO, "", ReturnResponse.BadRequest, null, false);
+                    }
+
+                }
+
+                //  _uniqueId.Add(new DbHandler.Model.UniqueID { Id = DTO.UniqueId, Route = "GetAll", CreatedTime = DateTime.Now });
+                var dues = _coursedues.GetByid(id);
+                return await helper.Response("succ-001", Level.Success, dues, ActiveErrorCode.Success, startTime, _logs, HttpContext, _config, DTO.baseClass, DTO, "", ReturnResponse.Success, null, false);
+
+            }
+            catch (Exception ex)
+            {
+                return await helper.Response("ex-0003", Level.Error, null, ActiveErrorCode.Failed, startTime, _logs, HttpContext, _config, DTO?.baseClass, DTO, "", ReturnResponse.BadRequest, ex, false);
+
+
+            }
+
+
+
+        }
+
         [HttpPost]
         [Route("AddCourses")]
         public async Task<IActionResult> EnrollCourse([FromBody] AddCourses DTO)
@@ -117,7 +194,8 @@ namespace StudentPortal.Controllers
                         _enr.IsActive = true;
                         _enr.CourseName = DTO.CourseName;
                         _enr.CourseCode = DTO.CourseCode;
-                        _enr.cstId = _id;
+                        _enr.fees = DTO.CourseFee;
+                        _enr.stId = _id;
                         enr.Add(_enr);
 
                         //}
@@ -143,6 +221,73 @@ namespace StudentPortal.Controllers
             }
 
         }
+        [HttpPost]
+        [Route("AddCourseFee")]
+        [ProducesResponseType(typeof(ActiveResponse<List<Courses>>), 200)]
+
+        public async Task<IActionResult> AddCourseFees([FromBody] AddCourseFee DTO)
+        {
+            var id = "";
+            DateTime startTime = DateTime.Now;
+            try
+            {
+                id = DTO.id;
+                if (!TryValidateModel(DTO))
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        return await helper.Response("err-Model", Level.Success, helper.GetErrors(ModelState), ActiveErrorCode.Failed, startTime, _logs, HttpContext, _config, DTO.baseClass, DTO, "", ReturnResponse.BadRequest, null, false);
+                    }
+
+                }
+
+                //  _uniqueId.Add(new DbHandler.Model.UniqueID { Id = DTO.UniqueId, Route = "GetAll", CreatedTime = DateTime.Now });
+                var course = _enroll.GetByid(id);
+                var total = _course.CalculateTotal();
+                var AddCourseFess = new CourseDues 
+                {
+                 id=DTO.id,
+                 CourseDue=total.ToString(),
+                 IsPaid=DTO.IsPaid
+                };
+                _coursedues.AddCourseDues(AddCourseFess);
+                
+                _coursedues.Save();
+                var courseFee = _coursedues.GetByid(id);
+                if (courseFee != null)
+                {
+                    var AddCourseFees = new CourseDues
+                    {
+                        id = DTO.id,
+                        CourseDue = total.ToString(),
+                        IsPaid = DTO.IsPaid
+                    };
+                    _coursedues.UpdateCourseDues(AddCourseFees);
+
+                    _coursedues.Save();
+
+
+
+                }
+
+                return await helper.Response("succ-001", Level.Success, DTO.IsPaid, ActiveErrorCode.Success, startTime, _logs, HttpContext, _config, DTO.baseClass, DTO, "", ReturnResponse.Success, null, false);
+
+            }
+            catch (Exception ex)
+            {
+                return await helper.Response("ex-0003", Level.Error, null, ActiveErrorCode.Failed, startTime, _logs, HttpContext, _config, DTO?.baseClass, DTO, "", ReturnResponse.BadRequest, ex, false);
+
+
+            }
+
+
+
+
+
+
+
+        }
+
 
 
 
