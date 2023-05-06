@@ -164,8 +164,7 @@ namespace StudentPortal.Helper
                 if (response == "Failed")
                     message = $"User with id:{id} was unsuccessful to Get Result";
 
-
-                if (Level == Level.Error && Convert.ToBoolean(configuration["ErrorLog"]) == true || Level == Level.Success && Convert.ToBoolean(configuration["SuccessLog"]) == true)
+                if (configuration != null && ((Level == Level.Error && configuration["ErrorLog"] != null && Convert.ToBoolean(configuration["ErrorLog"]) == true) || (Level == Level.Success && configuration["SuccessLog"] != null && Convert.ToBoolean(configuration["SuccessLog"]) == true)))
                 {
                     WriteLogs(_log, configuration, message, Level, id, clientIp, currentAction, exception, currentController, status, Starttime, Endtime, baseClass, RequestParameter, RequestResponse);
                 }

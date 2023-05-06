@@ -212,21 +212,21 @@ namespace StudentPortal.Controllers
 
                 //  _uniqueId.Add(new DbHandler.Model.UniqueID { Id = DTO.UniqueId, Route = "GetAll", CreatedTime = DateTime.Now });
                 var student = _studentRep.GetByStudentId(id);
-                if(student.IsGraduated!="")
-                {
-                    var addGrad = new StudentDetails
-                    { 
-                     IsGraduated=DTO.IsGraduated
+               // if(student.IsGraduated!="")
+               // {
+                    //var addGrad = new StudentDetails
+                    //{ 
+                    // IsGraduated=DTO.IsGraduated
                     
-                    };
-                    _studentRep.UpdateStudentDet(addGrad);
-                    _studentRep.Save();
+                    //};
+                    //_studentRep.UpdateStudentDet(addGrad);
+                    //_studentRep.Save();
                     return await _helper.Response("succ-001", Level.Success, student, ActiveErrorCode.Success, startTime, _logs, HttpContext, _configuration, DTO.baseClass, DTO, "", ReturnResponse.Success, null, false);
 
-                }
+              //  }
 
 
-                return await _helper.Response("succ-001", Level.Success, student, ActiveErrorCode.Success, startTime, _logs, HttpContext, _configuration, DTO.baseClass, DTO, "", ReturnResponse.Success, null, false);
+              //  return await _helper.Response("succ-001", Level.Success, student, ActiveErrorCode.Success, startTime, _logs, HttpContext, _configuration, DTO.baseClass, DTO, "", ReturnResponse.Success, null, false);
 
             }
             catch (Exception ex)

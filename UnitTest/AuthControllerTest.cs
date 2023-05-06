@@ -42,9 +42,9 @@ namespace UnitTest
                 cstID = "college123",
                 CreatedOn = DateTime.Now,
                 IsActive = true,
-                Name = "John",
-                LastName = "Doe",
-                Email = "johndoe@example.com",
+                Name = "Huzaifa",
+                LastName = "Hassan",
+                Email = "huzahfahassan@example.com",
                 Password = "password123",
                 MobileNo = "1234567890",
                 IsGraduated = "Yes"
