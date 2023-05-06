@@ -22,5 +22,6 @@ namespace DbHandler.Model
         public string Password { get; set; }
         public string MobileNo { get; set; }
 
+        public string IsGraduated { get; set; }
     }
 }

@@ -76,7 +76,7 @@ namespace StudentPortal.Controllers
             }
             catch (Exception ex)
             {
-                return await _helper.Response("err-001", Level.Error, ex.Message, ActiveErrorCode.Failed, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, DTO, "", ReturnResponse.InternalServerError, ex, false);
+                return await _helper.Response("err-001", Level.Error, ex.Message, ActiveErrorCode.Failed, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, DTO, "", ReturnResponse.BadRequest, ex, false);
             }
         }
 
@@ -105,8 +105,8 @@ namespace StudentPortal.Controllers
                 var transaction = _ctx.Database.BeginTransaction();
                 var stid = Guid.NewGuid().ToString();
                 Random rnd = new Random();
-                int stdid1 = rnd.Next(10, 9);
-                int stdid2 = rnd.Next(10, 9);
+                int stdid1 = rnd.Next(10, 99);
+                int stdid2 = rnd.Next(1, 9);
                 int stdid3 = rnd.Next(1, 7);
                 var _stdid = stdid1.ToString() + stdid2.ToString() + stdid3.ToString();
                 var _cstudentId="c" + stdid2.ToString() + stdid3.ToString();
@@ -125,10 +125,45 @@ namespace StudentPortal.Controllers
                      
                     
                     };
+                var financeDTO = new StudentDetails
+                {
+                    Id = addStudent.Id,
+                    stId = addStudent.stId,
+                    cstID = addStudent.cstID,
+                    CreatedOn = addStudent.CreatedOn,
+                    IsActive = addStudent.IsActive,
+                    Name = addStudent.Name,
+                    LastName = addStudent.LastName,
+                    Email = addStudent.Email,
+                    Password = addStudent.Password,
+                    MobileNo = addStudent.MobileNo,
+                   // IsGraduated = null, // this property is not set in the Student Portal, so set it to null
+                   // BaseClass = DTO.BaseClass
+                };
+
+                // Send request to finance portal
+                var client = new HttpClient();
+                client.BaseAddress = new Uri("https://localhost:7007/"); // replace with the correct base URL of the finance portal
+                var requestUri = "api/Auth/Register";
+                var requestBody = new StringContent(JsonConvert.SerializeObject(financeDTO), Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(requestUri, requestBody);
+
+                // Check response status
+                var content = await response.Content.ReadAsStringAsync();
+                var financeResponse = JsonConvert.DeserializeObject<ActiveResponse<RegisterDTO>>(content);
                 _studentRep.AddStudentDet(addStudent);
                 _studentRep.Save();
-               
+
+
                 transaction.Commit();
+                if (response.IsSuccessStatusCode)
+                {
+                    return await _helper.Response("suc-001", Level.Success, stid, ActiveErrorCode.Success, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, forLog, _cstudentId, ReturnResponse.Success, null, true);
+
+
+                }
+
+                
                 return await _helper.Response("suc-001", Level.Success, stid, ActiveErrorCode.Success, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, forLog, _cstudentId, ReturnResponse.Success, null, true);
 
 
@@ -148,7 +183,7 @@ namespace StudentPortal.Controllers
         }
         [HttpPost]
         [Route("GetStudentDetails")]
-        [ProducesResponseType(typeof(ActiveResponse<List<Courses>>), 200)]
+        [ProducesResponseType(typeof(ActiveResponse<StudentDetails>), 200)]
 
         public async Task<IActionResult> GetStudentDetails([FromBody] GetDet DTO)
         {
@@ -168,6 +203,20 @@ namespace StudentPortal.Controllers
 
                 //  _uniqueId.Add(new DbHandler.Model.UniqueID { Id = DTO.UniqueId, Route = "GetAll", CreatedTime = DateTime.Now });
                 var student = _studentRep.GetByStudentId(id);
+                if(student.IsGraduated!="")
+                {
+                    var addGrad = new StudentDetails
+                    { 
+                     IsGraduated=DTO.IsGraduated
+                    
+                    };
+                    _studentRep.UpdateStudentDet(addGrad);
+                    _studentRep.Save();
+                    return await _helper.Response("succ-001", Level.Success, student, ActiveErrorCode.Success, startTime, _logs, HttpContext, _configuration, DTO.baseClass, DTO, "", ReturnResponse.Success, null, false);
+
+                }
+
+
                 return await _helper.Response("succ-001", Level.Success, student, ActiveErrorCode.Success, startTime, _logs, HttpContext, _configuration, DTO.baseClass, DTO, "", ReturnResponse.Success, null, false);
 
             }
@@ -178,13 +227,8 @@ namespace StudentPortal.Controllers
 
             }
 
-
-
-
-
-
-
         }
+        
     }
     
 }

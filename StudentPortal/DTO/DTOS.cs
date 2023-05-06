@@ -72,8 +72,10 @@ namespace StudentPortal.DTO
 
     }
     public class ViewCourses
-    { 
-       public string id { get; set; }
+    {
+        public string id { get; set; }
+       
+       
         public BaseClass baseClass { get; set; }
 
         
@@ -82,7 +84,8 @@ namespace StudentPortal.DTO
     public class GetDet
     { 
       public string id { get; set; }
-        public BaseClass baseClass { get; set;}
+    public string IsGraduated { get; set; }    
+    public BaseClass baseClass { get; set;}
        
     }
     public class AddCourseFee
@@ -90,11 +93,17 @@ namespace StudentPortal.DTO
       public string id { get; set; }
 
         public string CourseFee { get; set; }
-
+        public string cstid { get; set; }
         public string Ref { get; set; }
         public bool IsPaid { get; set; }
         public BaseClass baseClass { get; set; }
     
+    }
+    public class GetRef
+    { 
+     public string id { get; set; }
+        public string Ref { get; set; }
+        public BaseClass baseclass { get; set; }
     }
   
     public class AddCourses

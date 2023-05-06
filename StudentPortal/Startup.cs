@@ -88,6 +88,7 @@ namespace StudentPortal
             services.AddScoped<IEnrollCourse, EnrollCourseRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
             services.AddScoped<IUniqueIdRepository, UniqueIdRepository>();
+            services.AddScoped<ICourseDuesRepository, CourseDuesRepository>();
             #endregion
             services.AddHttpClient();
             services.AddSwaggerGen(options =>

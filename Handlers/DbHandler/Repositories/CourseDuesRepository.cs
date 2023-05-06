@@ -23,8 +23,8 @@ namespace DbHandler.Repositories
         }
         public CourseDues GetByRef(string Ref)
         {
-            var resp = _ctx.TCourseDues.Where(x => x.Ref == Ref);
-            return (CourseDues)resp;
+            var resp = _ctx.TCourseDues.Where(x => x.Ref == Ref).FirstOrDefault();
+            return resp;
         }
         public decimal CalculateTotal()
         {
@@ -32,12 +32,12 @@ namespace DbHandler.Repositories
         }
         public CourseDues GetByid(string id)
         {
-            var resp = _ctx.TCourseDues.Where(x =>  x.id == id);
-            return (CourseDues)resp;
+            var resp = _ctx.TCourseDues.Where(x =>  x.id == id).FirstOrDefault();
+            return resp;
         }
         public bool Save()
         {
-            return -_ctx.SaveChanges() >= 0;
+            return _ctx.SaveChanges() >= 0;
         }
         public void UpdateCourseDues(CourseDues model)
         {
