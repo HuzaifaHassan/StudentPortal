@@ -25,6 +25,7 @@ using StudentPortal.Models;
 using StudentPortal.DTO;
 using StudentPortal.Helper;
 using System.Transactions;
+using Moq;
 
 namespace StudentPortal.Controllers
 {
@@ -43,6 +44,10 @@ namespace StudentPortal.Controllers
         private readonly ILogRepository _logs;
         private readonly IConfiguration _configuration;
 
+     
+
+        //private Mock<Castle.Core.Configuration.IConfiguration> mockConfigRep;
+
         public Auth(ApplicationDbContext ctx, IStudentRepository studentRep, ICourseRepository courserep, IEnrollCourse enroll, SignInManager<ApplicationUser> signInManager,
                      UserManager<ApplicationUser> userManager, IUniqueIdRepository uniqueId, ILogRepository logs, IConfiguration configuration)
         {
@@ -56,18 +61,21 @@ namespace StudentPortal.Controllers
             _logs = logs;
             _helper = new APIHelper(studentRep, userManager, configuration);
             _configuration = configuration;
-
+            
         }
+
+     
         [HttpPost]
         [Route("Login")]
-        [ProducesResponseType(typeof(ActiveResponse<string>), 200)]
+        [ProducesResponseType(typeof(ActiveResponse<StudentDetails>), 200)]
         public async Task<IActionResult> Login([FromBody] LoginDTO DTO)
         {
             DateTime _startTime = DateTime.Now;
             try
             {
-                var user = _studentRep.GetByStudentEmail(DTO.Email);
-                if (user == null || user.Password != DTO.Password)
+                //var user = _studentRep.GetByStudentEmail(DTO.Email);
+                var user = _studentRep.GetByStudentId(DTO.Id);
+                if (user == null )
                 {
                     return await _helper.Response("err-001", Level.Error, "Invalid email or password", ActiveErrorCode.Failed, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, DTO, "", ReturnResponse.Unauthorized, null, false);
                 }
@@ -98,7 +106,7 @@ namespace StudentPortal.Controllers
                 {
                     //if (!ModelState.IsValid)
                     //{
-                    return await _helper.Response("err-Model", Level.Success, _helper.GetErrors(ModelState), ActiveErrorCode.Failed, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, forLog, "", ReturnResponse.BadRequest, null, false);    //}
+                    return await _helper.Response("err-Model", Level.Success, _helper.GetErrors(ModelState), ActiveErrorCode.Failed, _startTime, _logs, HttpContext, _configuration, null, forLog, "", ReturnResponse.BadRequest, null, false);    //}
 
                 }
                 _UniqueId.Add(new DbHandler.Model.UniqueID { Id = DTO.UniqueId, Route = "Register", CreatedTime = _startTime });
@@ -122,7 +130,7 @@ namespace StudentPortal.Controllers
                       Email=DTO.Email,
                       Password=DTO.Password,
                       MobileNo=DTO.MobileNo,
-                     
+                     IsGraduated=""
                     
                     };
                 var financeDTO = new StudentDetails
@@ -137,6 +145,7 @@ namespace StudentPortal.Controllers
                     Email = addStudent.Email,
                     Password = addStudent.Password,
                     MobileNo = addStudent.MobileNo,
+                    IsGraduated=""
                    // IsGraduated = null, // this property is not set in the Student Portal, so set it to null
                    // BaseClass = DTO.BaseClass
                 };
@@ -158,13 +167,13 @@ namespace StudentPortal.Controllers
                 transaction.Commit();
                 if (response.IsSuccessStatusCode)
                 {
-                    return await _helper.Response("suc-001", Level.Success, stid, ActiveErrorCode.Success, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, forLog, _cstudentId, ReturnResponse.Success, null, true);
+                    return await _helper.Response("suc-001", Level.Success, stid, ActiveErrorCode.Success, _startTime, _logs, HttpContext, _configuration, null, forLog, _cstudentId, ReturnResponse.Success, null, true);
 
 
                 }
 
                 
-                return await _helper.Response("suc-001", Level.Success, stid, ActiveErrorCode.Success, _startTime, _logs, HttpContext, _configuration, DTO.BaseClass, forLog, _cstudentId, ReturnResponse.Success, null, true);
+                return await _helper.Response("suc-001", Level.Success, stid, ActiveErrorCode.Success, _startTime, _logs, HttpContext, _configuration, null, forLog, _cstudentId, ReturnResponse.Success, null, true);
 
 
             }
@@ -175,7 +184,7 @@ namespace StudentPortal.Controllers
 
                 var forLog = JsonConvert.DeserializeObject<RegisterDTO>(jso);
                 
-                return await _helper.Response("ex-0001", Level.Error, null, ActiveErrorCode.Failed, _startTime, _logs, HttpContext, null, DTO.BaseClass, forLog, "", ReturnResponse.BadRequest, ex, false);
+                return await _helper.Response("ex-0001", Level.Error, null, ActiveErrorCode.Failed, _startTime, _logs, HttpContext, null, null, forLog, "", ReturnResponse.BadRequest, ex, false);
                 
             }
 

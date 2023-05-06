@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentPortal.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +21,9 @@ namespace StudentPortal.Models
         public T Content { get; set; }
         public string? ExceptionMessage { get; set; }
         public string Token { get; set; }
+        public Level Level { get; set; }
+        public RegisterDTO Data { get; set; }
+        public bool Success { get; set; }
     }
     public enum ActiveErrorCode
     {

@@ -14,6 +14,10 @@ namespace DbHandler.Data
     
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public ApplicationDbContext()
+        {
+        }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<AppConfig> TAppConfig { get; set; }
         public DbSet<StudentDetails> TStudentDetails { get; set; }

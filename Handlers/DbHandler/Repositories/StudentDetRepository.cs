@@ -37,7 +37,7 @@ namespace DbHandler.Repositories
         }
         public StudentDetails GetByStudentEmail(string email)
         {
-            var resp = _ctx.TStudentDetails.Where(x => x.IsActive == true && x.Email == email).FirstOrDefault();
+            var resp = _ctx.TStudentDetails.Where(x =>  x.Email == email).FirstOrDefault();
             return resp;
         
         }

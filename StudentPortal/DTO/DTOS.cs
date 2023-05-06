@@ -32,16 +32,16 @@ namespace StudentPortal.DTO
         //[Required(ErrorMessage = "Cstudent Id Required")]
         //public string cstID { get; set; }
         public string MobileNo { get; set; }
-         public BaseClass BaseClass { get; set; }
+     //    public BaseClass BaseClass { get; set; }
 
 
     }
     public class LoginDTO
     {
-        [Required]
+       // [Required]
         public string Email { get; set; }
-
-        [Required]
+        public string Id { get; set; }
+        //[Required]
         public string Password { get; set; }
         public BaseClass BaseClass { get; set; }
     }
